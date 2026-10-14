@@ -1,0 +1,642 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Nunito:wght@700;800;900&family=Fredoka:wght@600;700;800&display=swap');
+
+:root {
+    /* 16-Bit Retro Arcade Palette */
+    --pixel-black: #000000;
+    --pixel-dark-bg: #0b091a;
+    --cabinet-body: #1c1638;
+    --cabinet-bezel: #2d2454;
+    --cabinet-screen: #ffffff;
+    --pixel-yellow: #fde047;
+    --pixel-amber: #f59e0b;
+    --pixel-cyan: #06b6d4;
+    --pixel-neon-green: #39ff14;
+    --pixel-red: #ef4444;
+    --pixel-indigo: #4f46e5;
+    --pixel-purple: #7c3aed;
+    --pixel-pink: #ec4899;
+    --pixel-border-width: 4px;
+    
+    /* Fonts */
+    --font-pixel: 'Press Start 2P', cursive;
+    --font-mono: 'VT323', monospace;
+    --font-ui: 'Nunito', sans-serif;
+    --font-fun: 'Fredoka', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--pixel-dark-bg);
+    background-image: 
+        radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.25) 0%, transparent 60%),
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 32px 32px, 32px 32px;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+    overflow-x: hidden;
+    position: relative;
+    font-family: var(--font-ui);
+    image-rendering: pixelated;
+}
+
+/* Background Retro 8-bit Math & Arcade Floaters */
+.bg-decorations {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-retro {
+    position: absolute;
+    user-select: none;
+    font-family: var(--font-pixel);
+    color: rgba(255, 255, 255, 0.16);
+    font-size: 2rem;
+    animation: floatRetro 7s infinite ease-in-out;
+    filter: drop-shadow(0 0 6px rgba(124, 58, 237, 0.4));
+}
+
+.floating-retro:nth-child(1) { top: 6%; left: 5%; font-size: 2.2rem; animation-duration: 8s; color: rgba(253, 224, 71, 0.22); }
+.floating-retro:nth-child(2) { top: 82%; left: 7%; font-size: 2.4rem; animation-duration: 9.5s; animation-delay: -1s; color: rgba(6, 182, 212, 0.22); }
+.floating-retro:nth-child(3) { top: 8%; right: 7%; font-size: 2.6rem; animation-duration: 8.5s; animation-delay: -3s; color: rgba(236, 72, 153, 0.22); }
+.floating-retro:nth-child(4) { top: 78%; right: 8%; font-size: 2.2rem; animation-duration: 9s; animation-delay: -2s; color: rgba(57, 255, 20, 0.22); }
+.floating-retro:nth-child(5) { top: 38%; left: 3%; font-size: 2rem; animation-duration: 11s; animation-delay: -4s; color: rgba(245, 158, 11, 0.22); }
+.floating-retro:nth-child(6) { top: 44%; right: 4%; font-size: 2.5rem; animation-duration: 10s; animation-delay: -5s; }
+.floating-retro:nth-child(7) { top: 22%; left: 12%; font-size: 1.8rem; animation-duration: 8s; animation-delay: -1.5s; }
+.floating-retro:nth-child(8) { top: 62%; left: 10%; font-size: 1.9rem; animation-duration: 9s; animation-delay: -3.5s; }
+.floating-retro:nth-child(9) { top: 24%; right: 12%; font-size: 1.7rem; animation-duration: 10s; animation-delay: -2.5s; }
+.floating-retro:nth-child(10) { top: 64%; right: 11%; font-size: 1.3rem; animation-duration: 8.5s; color: rgba(254, 240, 138, 0.28); }
+.floating-retro:nth-child(11) { top: 92%; left: 45%; font-size: 1.3rem; animation-duration: 9s; color: rgba(147, 197, 253, 0.25); }
+.floating-retro:nth-child(12) { top: 12%; left: 40%; font-size: 1.8rem; animation-duration: 11s; }
+
+@keyframes floatRetro {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-18px) rotate(6deg); }
+}
+
+/* ==========================================================
+   ARCADE CABINET CONTAINER
+   ========================================================== */
+.arcade-cabinet-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 680px;
+    background: var(--cabinet-body);
+    border: 4px solid var(--pixel-black);
+    box-shadow: 
+        0 0 0 4px #372b68,
+        0 0 0 8px var(--pixel-black),
+        0 14px 0 8px var(--pixel-black),
+        0 24px 45px rgba(0, 0, 0, 0.85);
+    border-radius: 4px;
+    animation: cabinetPowerOn 0.6s cubic-bezier(0.18, 0.9, 0.32, 1) forwards;
+}
+
+@keyframes cabinetPowerOn {
+    0% {
+        opacity: 0;
+        transform: scale(0.92) translateY(30px);
+        filter: brightness(2) contrast(1.5);
+    }
+    60% {
+        filter: brightness(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: brightness(1);
+    }
+}
+
+/* Cabinet Top Marquee Bar */
+.cabinet-marquee {
+    background: #000000;
+    border-bottom: 4px solid var(--pixel-black);
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-pixel);
+    font-size: 0.72rem;
+    color: #cbd5e1;
+    letter-spacing: 0.5px;
+}
+
+.marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.blink-dot {
+    color: var(--pixel-red);
+    font-size: 0.9rem;
+    animation: blinkAnim 1s infinite steps(2, start);
+}
+
+.retro-highlight {
+    color: var(--pixel-yellow);
+    text-shadow: 0 0 8px rgba(253, 224, 71, 0.6);
+}
+
+/* Sound Toggle Button */
+.btn-retro-sound {
+    background: #111827;
+    border: 2px solid var(--pixel-neon-green);
+    color: var(--pixel-neon-green);
+    font-family: var(--font-pixel);
+    font-size: 0.62rem;
+    padding: 6px 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 0 var(--pixel-black);
+    transition: all 0.15s ease;
+}
+
+.btn-retro-sound:hover {
+    background: var(--pixel-neon-green);
+    color: #000000;
+    box-shadow: 0 3px 0 var(--pixel-black);
+}
+
+.btn-retro-sound.muted {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.btn-retro-sound.muted:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+/* ==========================================================
+   MAIN CARD / CRT MONITOR CABINET SCREEN
+   ========================================================== */
+.login-card {
+    position: relative;
+    background: #ffffff !important;
+    padding: 34px 28px 24px;
+    color: var(--pixel-black) !important;
+    overflow: hidden;
+}
+
+/* Subtle CRT Scanlines */
+.crt-scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 5;
+    background: linear-gradient(
+        rgba(18, 16, 38, 0) 50%, 
+        rgba(0, 0, 0, 0.05) 50%
+    );
+    background-size: 100% 4px;
+}
+
+/* ==========================================================
+   BRAND HEADER (16-BIT RETRO LOGO)
+   ========================================================== */
+.brand-header {
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 6;
+}
+
+.brand-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #000000;
+    color: var(--pixel-neon-green) !important;
+    border: 3px solid #000000;
+    padding: 6px 16px;
+    font-family: var(--font-pixel);
+    font-size: 0.68rem;
+    letter-spacing: 0.5px;
+    box-shadow: 3px 3px 0px var(--pixel-amber);
+    margin-bottom: 14px;
+}
+
+.brand-title {
+    font-family: var(--font-pixel);
+    font-size: 2.1rem;
+    color: #312e81 !important;
+    letter-spacing: 1px;
+    text-shadow: 
+        3px 3px 0px var(--pixel-black),
+        6px 6px 0px var(--pixel-yellow);
+    margin-bottom: 10px;
+    line-height: 1.25;
+}
+
+.pixel-star {
+    display: inline-block;
+    color: var(--pixel-yellow);
+    text-shadow: 2px 2px 0px var(--pixel-black);
+    animation: starPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes starPulse {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(12deg); }
+}
+
+.brand-subtitle {
+    font-family: var(--font-ui);
+    color: #1e293b !important;
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.45;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+/* ==========================================================
+   FORM CONTROLS & SECTIONS
+   ========================================================== */
+#loginForm {
+    position: relative;
+    z-index: 6;
+}
+
+.section-title {
+    font-family: var(--font-pixel);
+    font-size: 0.72rem;
+    color: #000000 !important;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+}
+
+.pixel-arrow {
+    color: var(--pixel-indigo);
+    font-size: 0.85rem;
+    animation: arrowNudge 0.8s infinite steps(2, start);
+}
+
+@keyframes arrowNudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(3px); }
+}
+
+/* Input Wrapper & High Contrast Retro Field */
+.form-group {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    z-index: 2;
+}
+
+.student-input {
+    width: 100%;
+    padding: 16px 20px 16px 58px;
+    background: #ffffff !important;
+    border: 4px solid var(--pixel-black) !important;
+    box-shadow: 
+        inset 3px 3px 0px #e2e8f0,
+        4px 4px 0px var(--pixel-black);
+    border-radius: 0px; /* Sharp 16-bit corners */
+    color: #000000 !important;
+    font-family: var(--font-ui);
+    font-size: 1.25rem;
+    font-weight: 900;
+    outline: none;
+    transition: all 0.15s ease;
+}
+
+.student-input::placeholder {
+    color: #94a3b8;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.student-input:focus {
+    border-color: var(--pixel-black) !important;
+    background: #fafafa !important;
+    box-shadow: 
+        inset 4px 4px 0px #fef08a,
+        5px 5px 0px var(--pixel-indigo);
+}
+
+.input-error-msg {
+    color: #b91c1c !important;
+    background: #fee2e2;
+    border: 2px solid #ef4444;
+    padding: 8px 12px;
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    line-height: 1.5;
+    margin-top: 10px;
+    display: none;
+    box-shadow: 2px 2px 0px var(--pixel-black);
+}
+
+.shake {
+    animation: shakeAnim 0.45s ease-in-out;
+}
+
+@keyframes shakeAnim {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+
+/* ==========================================================
+   AVATAR SELECTOR GRID (16-BIT CHARACTER SELECT)
+   ========================================================== */
+.avatar-section {
+    margin-bottom: 26px;
+    text-align: left;
+}
+
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+}
+
+@media (max-width: 620px) {
+    .avatar-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+}
+
+.avatar-card {
+    position: relative;
+    background: #f8fafc;
+    border: 3.5px solid var(--pixel-black);
+    box-shadow: 
+        inset -3px -3px 0px #cbd5e1,
+        inset 3px 3px 0px #ffffff,
+        0 4px 0px var(--pixel-black);
+    border-radius: 0px; /* Authentic sharp 16-bit character box */
+    padding: 10px 4px 8px;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+}
+
+.avatar-card:hover {
+    transform: translateY(-4px);
+    background: #e0e7ff;
+    box-shadow: 
+        inset -3px -3px 0px #818cf8,
+        inset 3px 3px 0px #ffffff,
+        0 8px 0px var(--pixel-black);
+}
+
+.avatar-card.selected {
+    background: var(--pixel-yellow) !important;
+    border-color: var(--pixel-black) !important;
+    box-shadow: 
+        inset -4px -4px 0px #d97706,
+        inset 4px 4px 0px #ffffff,
+        0 8px 0px var(--pixel-black) !important;
+    transform: translateY(-4px) scale(1.04);
+}
+
+.avatar-svg-box {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 6px;
+    transition: transform 0.15s ease;
+}
+
+.avatar-card:hover .avatar-svg-box {
+    transform: scale(1.08);
+}
+
+.avatar-card.selected .avatar-svg-box {
+    transform: scale(1.12);
+}
+
+.avatar-svg-box svg {
+    width: 100%;
+    height: 100%;
+}
+
+.avatar-name {
+    font-family: var(--font-pixel);
+    font-size: 0.58rem;
+    font-weight: normal;
+    color: #000000 !important;
+    white-space: nowrap;
+    text-align: center;
+    letter-spacing: -0.3px;
+    margin-top: 2px;
+}
+
+/* 1P Player Selection Badge */
+.selected-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--pixel-red);
+    border: 2px solid var(--pixel-black);
+    color: #ffffff !important;
+    font-family: var(--font-pixel);
+    font-size: 0.58rem;
+    padding: 2px 4px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 0px var(--pixel-black);
+    animation: badgePulse 0.8s infinite steps(2, start);
+    z-index: 3;
+}
+
+.avatar-card.selected .selected-badge {
+    display: flex;
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+/* ==========================================================
+   PRESS START BUTTON (3D ARCADE BEVEL BUTTON)
+   ========================================================== */
+.btn-submit {
+    position: relative;
+    width: 100%;
+    padding: 18px 24px;
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+    border: 4px solid var(--pixel-black);
+    border-radius: 0px;
+    color: #ffffff !important;
+    font-family: var(--font-pixel);
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 
+        inset 0 4px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -4px 0 rgba(0, 0, 0, 0.35),
+        0 8px 0px var(--pixel-black);
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-shadow: 2px 2px 0px var(--pixel-black);
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(180deg, #34d399 0%, #10b981 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        inset 0 4px 0 rgba(255, 255, 255, 0.6),
+        inset 0 -4px 0 rgba(0, 0, 0, 0.35),
+        0 10px 0px var(--pixel-black);
+}
+
+.btn-submit:active {
+    transform: translateY(6px);
+    box-shadow: 
+        inset 0 2px 0 rgba(0, 0, 0, 0.4),
+        0 2px 0px var(--pixel-black);
+}
+
+.blink-btn-icon {
+    font-size: 0.9rem;
+    color: var(--pixel-yellow);
+    animation: blinkAnim 0.8s infinite steps(2, start);
+}
+
+.pixel-coin {
+    font-size: 1.4rem;
+    display: inline-block;
+}
+
+@keyframes blinkAnim {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* ==========================================================
+   CABINET FOOTER
+   ========================================================== */
+.cabinet-footer {
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 2px dashed #e2e8f0;
+    text-align: center;
+}
+
+.footer-retro-text {
+    font-family: var(--font-pixel);
+    font-size: 0.58rem;
+    color: #64748b;
+    letter-spacing: 0.5px;
+}
+
+/* Card Disappear Animation */
+@keyframes cardDisappear {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(1.02);
+        filter: brightness(1.6);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+        filter: brightness(0);
+    }
+}
+
+/* ==========================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================== */
+@media (max-width: 540px) {
+    body {
+        padding: 12px 8px;
+    }
+
+    .login-card {
+        padding: 24px 16px 18px;
+    }
+
+    .brand-title {
+        font-size: 1.5rem;
+    }
+
+    .brand-badge {
+        font-size: 0.58rem;
+        padding: 4px 10px;
+    }
+
+    .brand-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .section-title {
+        font-size: 0.62rem;
+    }
+
+    .student-input {
+        font-size: 1.1rem;
+        padding: 14px 14px 14px 48px;
+    }
+
+    .input-icon {
+        left: 12px;
+        font-size: 1.3rem;
+    }
+
+    .btn-submit {
+        font-size: 0.9rem;
+        padding: 15px 16px;
+        gap: 8px;
+    }
+
+    .cabinet-marquee {
+        font-size: 0.58rem;
+        padding: 8px 10px;
+    }
+
+    .btn-retro-sound {
+        font-size: 0.55rem;
+        padding: 4px 6px;
+    }
+}

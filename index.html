@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Tablas 🌟 Arcade Matemático 4° Básico</title>
+    <meta name="description" content="Plataforma educativa interactiva tipo Arcade Retro para dominar las tablas de multiplicar del 2 al 10 y preparar tu SIMCE.">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+</head>
+<body>
+
+    <!-- Fondo de Elementos Retro Flotantes -->
+    <div class="bg-decorations" aria-hidden="true">
+        <div class="floating-retro">×</div>
+        <div class="floating-retro">÷</div>
+        <div class="floating-retro">+</div>
+        <div class="floating-retro">=</div>
+        <div class="floating-retro">★</div>
+        <div class="floating-retro">🎮</div>
+        <div class="floating-retro">👾</div>
+        <div class="floating-retro">🪙</div>
+        <div class="floating-retro">❤️</div>
+        <div class="floating-retro">9×9</div>
+        <div class="floating-retro">7×8</div>
+        <div class="floating-retro">💎</div>
+    </div>
+
+    <!-- Contenedor Arcade Cabinet Principal -->
+    <div class="arcade-cabinet-wrapper">
+        <!-- Barra Marquee Superior Arcade -->
+        <div class="cabinet-marquee">
+            <div class="marquee-item"><span class="blink-dot">●</span> 1P READY</div>
+            <div class="marquee-item marquee-center">🪙 INSERT COIN: <span class="retro-highlight">CREDIT 02</span></div>
+            <div class="marquee-item marquee-right">
+                <button type="button" id="btnToggleSound" class="btn-retro-sound" title="Alternar Sonido SFX">
+                    🔊 SFX: ON
+                </button>
+            </div>
+        </div>
+
+        <!-- Tarjeta Principal Cabinet Arcade -->
+        <main class="login-card">
+            <!-- Capa sutil de Scanlines CRT retro -->
+            <div class="crt-scanlines" aria-hidden="true"></div>
+
+            <header class="brand-header">
+                <div class="brand-badge">
+                    <span>👾 RETRO ARCADE 16-BIT • 4° BÁSICO</span>
+                </div>
+                <h1 class="brand-title">MIS TABLAS <span class="pixel-star">★</span></h1>
+                <p class="brand-subtitle">¡Supera las tablas del 2 al 10 en la consola arcade y prepárate para el SIMCE!</p>
+            </header>
+
+            <form id="loginForm" novalidate>
+                <!-- Campo de Nombre -->
+                <div class="form-group">
+                    <label for="studentName" class="section-title">
+                        <span class="pixel-arrow">►</span>
+                        <span>INGRESA NOMBRE DE JUGADOR [ 1P ]:</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🕹️</span>
+                        <input 
+                            type="text" 
+                            id="studentName" 
+                            class="student-input" 
+                            placeholder="ESCRIBE TU NOMBRE..." 
+                            autocomplete="off"
+                            maxlength="20"
+                            required
+                        >
+                    </div>
+                    <div id="inputErrorMsg" class="input-error-msg">
+                        ⚠️ ¡ALERTA! INGRESA TU NOMBRE (MÍNIMO 2 LETRAS) PARA JUGAR
+                    </div>
+                </div>
+
+                <!-- Selector de Avatares -->
+                <div class="avatar-section">
+                    <div class="section-title">
+                        <span class="pixel-arrow">►</span>
+                        <span>SELECCIONA TU HÉROE [ HERO SELECT ]:</span>
+                    </div>
+                    <div id="avatarGrid" class="avatar-grid">
+                        <!-- Avatares insertados dinámicamente por js/login.js -->
+                    </div>
+                </div>
+
+                <!-- Botón de Ingreso Arcade -->
+                <button type="submit" id="btnSubmit" class="btn-submit">
+                    <span class="blink-btn-icon">▶</span>
+                    <span>¡PRESIONA START!</span>
+                    <span class="pixel-coin">🚀</span>
+                </button>
+            </form>
+
+            <footer class="cabinet-footer">
+                <span class="footer-retro-text">★ 4° BÁSICO • MATEMÁTICAS SIMCE • RETRO ARCADE 16-BIT ★</span>
+            </footer>
+        </main>
+    </div>
+
+    <script src="js/sound.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

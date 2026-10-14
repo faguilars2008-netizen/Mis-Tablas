@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Tablas 🌟 Arcade Matemático 4° Básico</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/games.css">
+    <link rel="stylesheet" href="css/simce.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+</head>
+<body>
+
+    <!-- Fondo de Elementos Retro Flotantes -->
+    <div class="bg-decorations" aria-hidden="true">
+        <div class="floating-retro">×</div>
+        <div class="floating-retro">÷</div>
+        <div class="floating-retro">+</div>
+        <div class="floating-retro">=</div>
+        <div class="floating-retro">★</div>
+        <div class="floating-retro">🎮</div>
+    </div>
+
+    <!-- Contenedor de Notificaciones Toast -->
+    <div id="toastContainer"></div>
+
+    <!-- MODAL DE PRÁCTICA INTERACTIVA ARCADE PARA CUALQUIER TABLA (ej: TABLA DEL 6) -->
+    <div id="tablePracticeModal" class="table-practice-modal">
+        <div class="practice-card">
+            <button id="btnClosePracticeModal" class="btn-close-practice">✕</button>
+
+            <!-- Mascot Reaction Box -->
+            <div id="practiceMascotBox" class="mascot-reaction-box">
+                <!-- SVG de Mascota insertado por JS -->
+            </div>
+
+            <div id="practiceSpeechBubble" class="practice-speech-bubble">
+                ¡Hola! Vamos a practicar juntos ✨
+            </div>
+
+            <!-- Título del Ejercicio con Números Negros de Alto Contraste -->
+            <h2 id="practiceQuestionTitle" class="practice-question-title">6 × 4 = ?</h2>
+
+            <!-- Representación Visual por Grupos de Objetos -->
+            <div id="practiceVisualGroups" class="practice-visual-groups"></div>
+
+            <!-- Grilla de Alternativas -->
+            <div id="practiceOptionsGrid" class="practice-options-grid"></div>
+        </div>
+    </div>
+
+    <!-- MODAL DE TABLA RÁPIDA (CHEAT SHEET INTERACTIVA) -->
+    <div id="quickCheatSheetModal" class="table-practice-modal">
+        <div class="practice-card cheat-sheet-card">
+            <button id="btnCloseCheatSheetModal" class="btn-close-practice">✕</button>
+            <div class="brand-badge" style="margin-bottom: 8px;">
+                <span>📜 GUÍA RÁPIDA DE MULTIPLICAR</span>
+            </div>
+            <h2 id="cheatSheetTitle" class="practice-question-title" style="font-size: 1.8rem; margin-bottom: 8px;">TABLA DEL 6</h2>
+            <p style="font-family: var(--font-ui); font-weight: 800; color: #1e293b; margin-bottom: 16px;">
+                💡 Haz clic en cualquier multiplicación para escuchar y ver su cálculo:
+            </p>
+            <div id="cheatSheetGrid" class="cheat-sheet-grid"></div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RETO RELÁMPAGO ⚡ (3 PREGUNTAS EXPRESS) -->
+    <div id="quickFlashModal" class="table-practice-modal">
+        <div class="practice-card flash-challenge-card">
+            <button id="btnCloseFlashModal" class="btn-close-practice">✕</button>
+            <div class="brand-badge badge-new" style="margin-bottom: 8px;">
+                <span>⚡ RETO RELÁMPAGO ARCADE</span>
+            </div>
+            <h2 id="flashChallengeTitle" class="practice-question-title" style="font-size: 1.6rem; margin-bottom: 6px;">RETO FLASH: TABLA DEL 6</h2>
+            <div id="flashQuestionHud" style="margin-bottom: 12px; font-family: var(--font-pixel); font-size: 0.72rem; color: #4338ca;">
+                Pregunta: <span id="flashCurrentStep">1</span> / 3 | Aciertos: <span id="flashCorrectScore">0</span>
+            </div>
+            <div id="flashQuestionPrompt" class="hud-target-badge hud-large-badge" style="margin-bottom: 18px; font-size: 1.8rem;">6 × 7 = ?</div>
+            <div id="flashOptionsGrid" class="practice-options-grid"></div>
+        </div>
+    </div>
+
+    <!-- Barra de Navegación Superior y Perfil Arcade -->
+    <header class="top-navbar">
+        <a href="#" class="brand-mini">
+            <span class="brand-mini-icon">🎮</span>
+            <span>Mis Tablas</span>
+        </a>
+
+        <div class="profile-widget">
+            <div class="profile-avatar-mini" id="profileAvatarBox">
+                <!-- SVG insertado dinámicamente -->
+            </div>
+            <div class="profile-info">
+                <div class="profile-name" id="profileNameText">Estudiante</div>
+                <div class="profile-stats">
+                    <span id="profileLevelText">Nivel 1</span>
+                    <span class="stat-pill">⭐ <strong id="profileStarsText">0</strong></span>
+                </div>
+                <div class="xp-bar-container">
+                    <div class="xp-bar-fill" id="profileXpBarFill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button type="button" id="btnToggleSoundSystem" class="btn-retro-sound" title="Alternar Sonido SFX">🔊 SFX: ON</button>
+            <button id="btnSwitchUser" class="btn-switch-user">👤 Cambiar Alumno</button>
+        </div>
+    </header>
+
+    <!-- Navegación por Pestañas Arcade -->
+    <nav class="tab-navigation">
+        <button class="nav-tab-btn active" data-tab="roadmap">
+            <span>🗺️ Mapa de Tablas</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="learning">
+            <span>📚 Explorador Visual</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="games">
+            <span>🎮 Minijuegos</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="badges">
+            <span>🏆 Mis Logros</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="simce">
+            <span>📝 Ensayo SIMCE</span>
+        </button>
+    </nav>
+
+    <!-- ÁREAS DE VISTA (TAB PANES) -->
+    <main class="tab-content">
+
+        <!-- 1. MAPA DE AVANCE (ROADMAP DASHBOARD INTERACTIVO) -->
+        <section id="view-roadmap" class="view-pane active">
+            <div class="roadmap-header">
+                <div class="brand-badge" style="margin-bottom: 8px;">
+                    <span>🗺️ MAPA MUNDIAL ARCADE • AVENTURA 4° BÁSICO</span>
+                </div>
+                <h1 class="roadmap-title">¡CAMINO DEL MAESTRO DE LAS TABLAS! 🚀</h1>
+                <p class="roadmap-subtitle">Supera cada nivel, consulta las guías rápidas y prepárate para los grandes desafíos SIMCE.</p>
+            </div>
+
+            <!-- Ruta Mundial Interactiva (World Map Progress Bar) -->
+            <div class="world-route-card">
+                <div class="world-route-header">
+                    <span>📍 TU POSICIÓN EN LA RUTA [1P]:</span>
+                    <span id="worldRouteStatusText" class="world-route-pill">CARGANDO AVENTURA...</span>
+                </div>
+                <div class="world-route-track" id="worldRouteTrack">
+                    <!-- Nodos de la ruta insertados por js/main.js -->
+                </div>
+            </div>
+
+            <!-- Tarjeta de Misión Diaria Interactiva -->
+            <div class="daily-mission-card" id="dailyMissionCard">
+                <div class="mission-icon">🎯</div>
+                <div class="mission-info">
+                    <div class="mission-tag">MISIÓN DEL DÍA (+60 XP EXTRA)</div>
+                    <h3 id="dailyMissionTitle" class="mission-title">¡Domina la Tabla del 7 en la Sala de Práctica!</h3>
+                    <p id="dailyMissionDesc" class="mission-desc">Acierta 5 multiplicaciones seguidas para reclamar tu recompensa diaria.</p>
+                </div>
+                <button id="btnAcceptDailyMission" class="btn-node-action mission-btn">¡ACEPTAR MISIÓN! 🚀</button>
+            </div>
+
+            <!-- Filtros Interactivos de Tablas -->
+            <div class="roadmap-filter-bar">
+                <span class="filter-label">🔍 FILTRAR TABLAS:</span>
+                <div class="filter-buttons-group">
+                    <button class="btn-filter-tag active" data-filter="all">Todas (9)</button>
+                    <button class="btn-filter-tag" data-filter="unlocked">🔓 Desbloqueadas</button>
+                    <button class="btn-filter-tag" data-filter="mastered">⭐ Dominadas (3★)</button>
+                    <button class="btn-filter-tag" data-filter="locked">🔒 Por Desbloquear</button>
+                </div>
+            </div>
+
+            <!-- Banner Destacado SIMCE -->
+            <div class="simce-hero-card">
+                <div class="simce-hero-info">
+                    <h3>📝 Ensayo Matemático tipo SIMCE (4° Básico)</h3>
+                    <p>Resuelve 10 problemas contextualizados de la vida cotidiana para 4° básico con retroalimentación instantánea.</p>
+                </div>
+                <button id="btnStartSimceHero" class="btn-simce-start">Rendir Ensayo SIMCE 🚀</button>
+            </div>
+
+            <!-- Grilla de Nodos Nivel 2 al 10 -->
+            <div class="roadmap-grid" id="roadmapGridContainer">
+                <!-- Nodos interactivos insertados por js/main.js -->
+            </div>
+        </section>
+
+
+        <!-- 2. APRENDER TABLAS (EXPLORADOR VISUAL ULTRA-INTERACTIVO) -->
+        <section id="view-learning" class="view-pane">
+            <div class="games-hub-header">
+                <div class="brand-badge" style="margin-bottom: 8px;">
+                    <span>🔬 LABORATORIO INTERACTIVO MULTIPLICATIVO</span>
+                </div>
+                <h2 class="games-hub-title">📚 EXPLORADOR VISUAL DE MULTIPLICACIONES</h2>
+                <p class="games-hub-subtitle">Experimenta, gira matrices, haz saltos en la recta numérica y descubre el sentido de multiplicar.</p>
+            </div>
+
+            <!-- Selector Rápido de Tablas 16-Bit (Botones Arcade) -->
+            <div class="quick-table-selector-box">
+                <div class="selector-title-row">
+                    <span>🎮 ELIGE LA TABLA QUE QUIERES EXPLORAR:</span>
+                </div>
+                <div class="table-arcade-chips" id="tableArcadeChips">
+                    <!-- Botones rápidos 2 al 10 insertados por js/learning.js -->
+                </div>
+            </div>
+
+            <!-- Controles Interactivos con Steppers y Emojis -->
+            <div class="explorer-stepper-panel">
+                <!-- Stepper de Multiplicador -->
+                <div class="stepper-unit">
+                    <span class="stepper-label">MULTIPLICADOR:</span>
+                    <div class="stepper-control-row">
+                        <button id="btnDecMult" class="btn-stepper-press" title="Restar 1">◀ -1</button>
+                        <div id="multDisplayBox" class="stepper-val-box">× 4</div>
+                        <button id="btnIncMult" class="btn-stepper-press" title="Sumar 1">+1 ▶</button>
+                    </div>
+                </div>
+
+                <!-- Selector de Objetos Retro -->
+                <div class="stepper-unit">
+                    <span class="stepper-label">OBJETO DE JUEGO:</span>
+                    <div class="items-chips-flex" id="itemsChipsFlex">
+                        <!-- Chips insertados por js/learning.js -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de Herramientas Interactivas Arcade -->
+            <div class="explorer-interactive-tools">
+                <button id="btnAnimateCount" class="btn-tool-arcade">
+                    <span class="tool-icon">▶</span>
+                    <span>ANIMAR CONTEO EN VIVO</span>
+                </button>
+                <button id="btnRotateMatrix" class="btn-tool-arcade">
+                    <span class="tool-icon">🔄</span>
+                    <span>GIRAR MATRIZ (A×B = B×A)</span>
+                </button>
+                <button id="btnToggleNumberLine" class="btn-tool-arcade">
+                    <span class="tool-icon">🦘</span>
+                    <span>RECTA NUMÉRICA CON SALTOS</span>
+                </button>
+                <button id="btnToggleQuizMode" class="btn-tool-arcade">
+                    <span class="tool-icon">👁️</span>
+                    <span id="quizModeBtnText">MODO DESAFÍO: ¿CUÁL ES?</span>
+                </button>
+            </div>
+
+            <!-- Área de Visualización Principal -->
+            <div class="visual-display-area">
+                <div id="explorerEquationSummary"></div>
+
+                <!-- Área Interactiva de Recta Numérica (Ocultable/Mostrable) -->
+                <div id="interactiveNumberLineArea" class="number-line-box" style="display: none;">
+                    <div class="number-line-header">
+                        <span class="pixel-arrow">►</span> SALTOS EN LA RECTA NUMÉRICA:
+                        <button id="btnDoJump" class="btn-stepper-press" style="padding: 6px 14px; font-size: 0.65rem;">¡HACER SALTO! 🦘</button>
+                    </div>
+                    <div class="number-line-canvas-container" id="numberLineTrack"></div>
+                </div>
+                
+                <h3 class="visual-subheading">
+                    <span>📦 1. Representación por Grupos (¡Haz clic en los objetos para contar!):</span>
+                </h3>
+                <div id="explorerGroupsContainer" class="groups-flex-container"></div>
+
+                <h3 class="visual-subheading">
+                    <span>📐 2. Arreglo Rectangular (Filas × Columnas):</span>
+                </h3>
+                <div id="explorerArrayGrid" class="array-grid-container"></div>
+
+                <div id="explorerSkipPattern" style="margin-top: 26px;"></div>
+            </div>
+        </section>
+
+
+        <!-- 3. JUEGOS Y DESAFÍOS (10 MINIJUEGOS ARCADE) -->
+        <section id="view-games" class="view-pane">
+            <div id="gamesHubGrid">
+                <div class="games-hub-header">
+                    <div class="brand-badge" style="margin-bottom: 10px;">
+                        <span>👾 RETRO ARCADE 16-BIT • SALA DE JUEGOS</span>
+                    </div>
+                    <h2 class="games-hub-title">🎮 SUITE DE 10 MINIJUEGOS ARCADE</h2>
+                    <p class="games-hub-subtitle">¡Aprende y domina las tablas de multiplicar jugando con animaciones, sonidos y combos!</p>
+                </div>
+
+                <div class="games-selector-grid">
+                    <!-- 1. Memoria -->
+                    <div class="game-select-card" data-game="memoria">
+                        <div class="game-genre-badge">PUZZLE</div>
+                        <div class="game-icon-large">🃏</div>
+                        <div class="game-card-title">Memoria Matemática</div>
+                        <div class="game-card-desc">Encuentra las parejas de cartas que conectan multiplicaciones con su producto exacto.</div>
+                    </div>
+
+                    <!-- 2. Atrapa -->
+                    <div class="game-select-card" data-game="atrapa">
+                        <div class="game-genre-badge">REFLEJOS</div>
+                        <div class="game-icon-large">🫧</div>
+                        <div class="game-card-title">Atrapa el Resultado</div>
+                        <div class="game-card-desc">Atrapa la burbuja flotante con el resultado correcto antes de que suba a la cima.</div>
+                    </div>
+
+                    <!-- 3. Galaxia de Tablas (NUEVO) -->
+                    <div class="game-select-card" data-game="galaxia">
+                        <div class="game-genre-badge badge-new">¡NUEVO! 🚀</div>
+                        <div class="game-icon-large">👾</div>
+                        <div class="game-card-title">Galaxia de Tablas</div>
+                        <div class="game-card-desc">Dispara rayos láser de tu nave arcade a los invasores que tengan la respuesta correcta.</div>
+                    </div>
+
+                    <!-- 4. Carrera Nitro (NUEVO) -->
+                    <div class="game-select-card" data-game="carrera">
+                        <div class="game-genre-badge badge-new">¡NUEVO! 🏎️</div>
+                        <div class="game-icon-large">🏎️</div>
+                        <div class="game-card-title">Carrera Retro Nitro</div>
+                        <div class="game-card-desc">Conduce tu bólido por el carril que tiene el resultado y activa el turbo nitro.</div>
+                    </div>
+
+                    <!-- 5. Martillo de Topos (NUEVO) -->
+                    <div class="game-select-card" data-game="topos">
+                        <div class="game-genre-badge badge-new">¡NUEVO! 🔨</div>
+                        <div class="game-icon-large">🐹</div>
+                        <div class="game-card-title">Martillo de Topos</div>
+                        <div class="game-card-desc">Golpea con el martillo arcade al topo que sostenga el producto exacto antes de que se oculte.</div>
+                    </div>
+
+                    <!-- 6. Construye -->
+                    <div class="game-select-card" data-game="construye">
+                        <div class="game-genre-badge">BLOQUES</div>
+                        <div class="game-icon-large">🧩</div>
+                        <div class="game-card-title">Construye la Multiplicación</div>
+                        <div class="game-card-desc">Agrupa cajas y bloques de objetos para armar la multiplicación paso a paso.</div>
+                    </div>
+
+                    <!-- 7. Quién tiene la Respuesta -->
+                    <div class="game-select-card" data-game="quien">
+                        <div class="game-genre-badge">QUIZ</div>
+                        <div class="game-icon-large">🤖</div>
+                        <div class="game-card-title">¿Quién tiene la Respuesta?</div>
+                        <div class="game-card-desc">4 personajes sostienen números misteriosos. Elige al héroe con la solución correcta.</div>
+                    </div>
+
+                    <!-- 8. Desafío Contra el Tiempo -->
+                    <div class="game-select-card" data-game="tiempo">
+                        <div class="game-genre-badge">SURVIVAL</div>
+                        <div class="game-icon-large">⏱️</div>
+                        <div class="game-card-title">Desafío Contra el Tiempo</div>
+                        <div class="game-card-desc">Responde multiplicaciones en 30 segundos acumulando combos y multiplicadores.</div>
+                    </div>
+
+                    <!-- 9. Arrastra y Completa -->
+                    <div class="game-select-card" data-game="arrastra">
+                        <div class="game-genre-badge">LÓGICA</div>
+                        <div class="game-icon-large">🎯</div>
+                        <div class="game-card-title">Arrastra y Completa</div>
+                        <div class="game-card-desc">Coloca la ficha con el número faltante para completar la ecuación vacía.</div>
+                    </div>
+
+                    <!-- 10. Detective Matemático -->
+                    <div class="game-select-card" data-game="detective">
+                        <div class="game-genre-badge">ENIGMA</div>
+                        <div class="game-icon-large">🔍</div>
+                        <div class="game-card-title">Detective Matemático</div>
+                        <div class="game-card-desc">Descifra las 3 pistas del caso policial para adivinar el número oculto de la tabla.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arena de Juego Activo -->
+            <div id="activeGameArena" class="active-arena-container" style="display: none;">
+                <div class="arena-header">
+                    <h3 id="activeGameTitle">Minijuego</h3>
+                    <button id="btnBackGamesHub" class="btn-back-hub">⬅️ Volver a los Juegos</button>
+                </div>
+                <div id="gameBodyContainer"></div>
+            </div>
+        </section>
+
+
+        <!-- 4. MIS LOGROS Y TROFEOS -->
+        <section id="view-badges" class="view-pane">
+            <div class="games-hub-header">
+                <h2 class="games-hub-title">🏆 Sala de Trofeos e Insignias</h2>
+                <p style="color: #cbd5e1; font-weight: 700;">Demuestra tu avance acumulando estrellas y desbloqueando insignias.</p>
+            </div>
+            <div class="badges-grid" id="badgesGridContainer">
+                <!-- Insertado por js/main.js -->
+            </div>
+        </section>
+
+
+        <!-- 5. ENSAYO MATEMÁTICO SIMCE (4° BÁSICO) -->
+        <section id="view-simce" class="view-pane">
+            <div class="games-hub-header">
+                <h2 class="games-hub-title">📝 Ensayo Matemático tipo SIMCE</h2>
+                <p style="color: #cbd5e1; font-weight: 700;">10 Preguntas contextualizadas para 4° básico en situaciones de la vida cotidiana.</p>
+            </div>
+
+            <div class="simce-layout">
+                <aside class="simce-sidebar">
+                    <div class="simce-sidebar-title">
+                        <span>Preguntas:</span>
+                        <span id="simceAnsweredBadge" class="simce-status-badge">0 / 10 Respondidas</span>
+                    </div>
+                    <div class="simce-nav-grid" id="simceNavGrid"></div>
+                </aside>
+
+                <main class="simce-main-pane">
+                    <div>
+                        <div id="simceContextTag" class="context-tag">🛒 Contexto</div>
+                        <h2 id="simceQuestionText" class="question-text">Pregunta de prueba</h2>
+                        <div id="simceIllustrationBox" class="question-illustration-box"></div>
+                        <div id="simceOptionsGrid" class="options-grid"></div>
+                    </div>
+
+                    <div class="simce-controls-bar">
+                        <button id="btnSimcePrev" class="btn-simce-nav" disabled>⬅️ Anterior</button>
+                        <button id="btnSimceNext" class="btn-simce-nav">Siguiente ➡️</button>
+                        <button id="btnSimceFinish" class="btn-simce-finish">Finalizar Ensayo 🏅</button>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Modal Resultados SIMCE -->
+            <div id="simceResultsModal" class="simce-results-modal">
+                <div class="results-card">
+                    <div class="score-circle-container">
+                        <div class="score-circle-inner">
+                            <div id="simceResultScoreNum" class="score-num">8 / 10</div>
+                            <div style="font-size: 0.85rem; color: #334155; font-weight: 800;">Puntaje SIMCE</div>
+                        </div>
+                    </div>
+                    <h2 class="results-title">¡Resultados del Ensayo SIMCE!</h2>
+                    <div id="simceResultLevelBadge" class="results-level-badge level-avanzado">Nivel Avanzado</div>
+                    
+                    <div class="feedback-breakdown" id="simceFeedbackContainer"></div>
+
+                    <button id="btnCloseSimceResults" class="btn-simce-finish">Volver al Menú Principal 🚀</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Scripts del Sistema -->
+    <script src="../js/sound.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/learning.js"></script>
+    <script src="js/games.js"></script>
+    <script src="js/simce.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
